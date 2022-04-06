@@ -53,13 +53,15 @@ export default function useTsvItems({
 
       for (let index = 0; index < tsvItems.length; index++) {
         const note = tsvItems[index]
-
         const referenceChunks = note?.Reference?.split(':')
         const Chapter = referenceChunks ? referenceChunks[0] : null
         const Verse = referenceChunks ? referenceChunks[1] : null
 
         const buildRange = () => {
           if (Verse) {
+            if (Verse.split('-').length < 1) {
+              return null
+            }
             const startRange = Verse.split('-')
             if (parseInt(startRange[1]) - parseInt(startRange[0]) === 1) {
               return startRange
@@ -79,7 +81,7 @@ export default function useTsvItems({
           }
         }
         const range = Verse ? buildRange() : null
-
+        console.log(range)
         const noteBuild = verse => {
           if (Chapter && verse && book) {
             note.Chapter = Chapter
@@ -105,7 +107,7 @@ export default function useTsvItems({
           }
         }
 
-        if (range) {
+        if (range && range.length > 0) {
           range.forEach(el => {
             noteBuild(el)
           })
