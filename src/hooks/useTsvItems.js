@@ -38,6 +38,7 @@ export default function useTsvItems({
   verse,
   onResourceError,
   httpConfig = {},
+  rangesSupport = false,
 }) {
   const [{ items, tsvs }, setState] = useState({
     items: [],
@@ -57,7 +58,7 @@ export default function useTsvItems({
         const Chapter = referenceChunks ? referenceChunks[0] : null
         const Verse = referenceChunks ? referenceChunks[1] : null
 
-        const buildRange = () => {
+        const buildRanges = () => {
           if (Verse) {
             if (Verse.split('-').length < 1) {
               return null
@@ -80,8 +81,8 @@ export default function useTsvItems({
             return null
           }
         }
-        const range = Verse ? buildRange() : null
-        console.log(range)
+        const ranges = Verse ? buildRanges() : null
+
         const noteBuild = verse => {
           if (Chapter && verse && book) {
             note.Chapter = Chapter
@@ -107,8 +108,8 @@ export default function useTsvItems({
           }
         }
 
-        if (range && range.length > 0) {
-          range.forEach(el => {
+        if (rangesSupport && ranges && ranges.length > 0) {
+          ranges.forEach(el => {
             noteBuild(el)
           })
         } else {
