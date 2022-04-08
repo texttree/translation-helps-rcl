@@ -63,25 +63,18 @@ export default function useTsvItems({
             if (Verse.split('-').length < 1) {
               return null
             }
-            const startRange = Verse.split('-')
-            if (parseInt(startRange[1]) - parseInt(startRange[0]) === 1) {
-              return startRange
-            } else {
-              const finishRange = []
-              for (
-                let i = parseInt(startRange[0]);
-                i < parseInt(startRange[1]) + 1;
-                i++
-              ) {
-                finishRange.push(i.toString())
-              }
-              return finishRange
+            const range = Verse.split('-')
+            let startRange = range[0]
+            const resultRange = []
+            while (startRange <= range[1]) {
+              resultRange.push(startRange++)
             }
+            return resultRange
           } else {
             return null
           }
         }
-        const ranges = Verse ? buildRanges() : null
+        const ranges = Verse && rangesSupport ? buildRanges() : null
 
         const noteBuild = verse => {
           if (Chapter && verse && book) {

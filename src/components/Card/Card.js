@@ -14,23 +14,22 @@ import IconButton from '@material-ui/core/IconButton'
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import MinimizeIcon from '@material-ui/icons/Minimize';
+import MinimizeIcon from '@material-ui/icons/Minimize'
 import Paper from '../Paper'
 import SettingsCard from '../SettingsCard'
 import Scrollable from '../Scrollable'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   title: {
     fontSize: '16px',
     fontWeight: 'bold',
-    fontFamily: `Noto Sans`,
+
     maxWidth: '100%',
-    color: '#424242',
+
     lineHeight: '14px',
     wordBreak: 'break-word',
   },
   dragIcon: {
-    color: '#ECECEC',
     margin: '0px',
     cursor: props => (props.dragging ? 'grabbing' : 'grab'),
   },
@@ -253,9 +252,9 @@ const Card = ({
                 className={classes.margin}
               >
                 {markdownView ? (
-                  <VisibilityOffIcon id='visibility_icon' htmlColor='#000' />
+                  <VisibilityOffIcon id='visibility_icon' />
                 ) : (
-                  <VisibilityIcon id='visibility_icon' htmlColor='#000' />
+                  <VisibilityIcon id='visibility_icon' />
                 )}
               </IconButton>
             ) : null}
