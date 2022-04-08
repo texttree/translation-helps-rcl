@@ -38,6 +38,7 @@ export default function useTsvItems({
   verse,
   onResourceError,
   httpConfig = {},
+  rangeSupport = false,
 }) {
   const [{ items, tsvs }, setState] = useState({
     items: [],
@@ -57,27 +58,55 @@ export default function useTsvItems({
         const Chapter = referenceChunks ? referenceChunks[0] : null
         const Verse = referenceChunks ? referenceChunks[1] : null
 
-        if (Chapter && Verse && book) {
-          note.Chapter = Chapter
-          note.Verse = Verse
-          note.Book = book
+        const buildRanges = () => {
+          if (Verse) {
+            if (Verse.split('-').length < 1) {
+              return null
+            }
+            const range = Verse.split('-')
+            let startRange = range[0]
+            const resultRange = []
+            while (startRange <= range[1]) {
+              resultRange.push(startRange++)
+            }
+            return resultRange
+          } else {
+            return null
+          }
+        }
+        const ranges = Verse && rangeSupport ? buildRanges() : null
+
+        const noteBuild = verse => {
+          if (Chapter && verse && book) {
+            note.Chapter = Chapter
+            note.Verse = verse
+            note.Book = book
+          }
+
+          if (
+            tn[book] &&
+            tn[book][note.Chapter] &&
+            tn[book][note.Chapter][note.Verse]
+          ) {
+            tn[book][note.Chapter][note.Verse].push(note)
+          } else if (tn[book] && tn[book][note.Chapter]) {
+            tn[book][note.Chapter][note.Verse] = [note]
+          } else if (tn[book]) {
+            tn[book][note.Chapter] = {}
+            tn[book][note.Chapter][note.Verse] = [note]
+          } else {
+            tn[book] = {}
+            tn[book][note.Chapter] = {}
+            tn[book][note.Chapter][note.Verse] = [note]
+          }
         }
 
-        if (
-          tn[book] &&
-          tn[book][note.Chapter] &&
-          tn[book][note.Chapter][note.Verse]
-        ) {
-          tn[book][note.Chapter][note.Verse].push(note)
-        } else if (tn[book] && tn[book][note.Chapter]) {
-          tn[book][note.Chapter][note.Verse] = [note]
-        } else if (tn[book]) {
-          tn[book][note.Chapter] = {}
-          tn[book][note.Chapter][note.Verse] = [note]
+        if (rangeSupport && ranges && ranges.length > 0) {
+          ranges.forEach(el => {
+            noteBuild(el)
+          })
         } else {
-          tn[book] = {}
-          tn[book][note.Chapter] = {}
-          tn[book][note.Chapter][note.Verse] = [note]
+          noteBuild(Verse)
         }
       }
 

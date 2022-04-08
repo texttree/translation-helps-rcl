@@ -48,6 +48,7 @@ const useContent = ({
   httpConfig = {},
   viewMode = 'markdown',
   useUserLocalStorage,
+  rangeSupport,
 }) => {
   const [initialized, setInitialized] = useState(false)
 
@@ -93,6 +94,7 @@ const useContent = ({
     server,
     owner,
     verse,
+    rangeSupport,
   })
 
   const contentNotFoundError = !content
