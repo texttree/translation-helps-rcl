@@ -299,19 +299,19 @@ const Card = ({
               ) : null}
             </Extensible>
           )}
+          {onLicense ? (
+            <InfoIcon
+              id='license_icon'
+              className={classes.pointerIcon}
+              onClick={showLicense}
+            />
+          ) : null}
           {closeable ? (
-            <>
-              <InfoIcon
-                id='license_icon'
-                className={classes.pointerIcon}
-                onClick={showLicense}
-              />
-              <CloseIcon
-                id='settings_card_close'
-                className={classes.pointerIcon}
-                onClick={onClose}
-              />
-            </>
+            <CloseIcon
+              id='settings_card_close'
+              className={classes.pointerIcon}
+              onClick={onClose}
+            />
           ) : (
             <SettingsCard
               title={settingsTitle}
@@ -380,7 +380,7 @@ Card.defaultProps = {
   saved: false,
   dragging: false,
   onLicense: false,
-  closeable: true,
+  closeable: false,
   disableFilters: false,
   disableNavigation: false,
   hideMarkdownToggle: false,
