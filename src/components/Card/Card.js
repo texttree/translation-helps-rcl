@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import styledComponents from 'styled-components'
-import {
-  Badge,
-  IconButton
-} from '@mui/material'
+import { Badge, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import InfoIcon from '@mui/icons-material/Info'
 import {
   MoreVert as MoreVertIcon,
   Announcement as AnnouncementIcon,
@@ -25,7 +23,7 @@ import SettingsCard from '../SettingsCard'
 import Scrollable from '../Scrollable'
 import { Extensible } from '@gwdevs/extensible-rcl'
 
-const PREFIX = 'Card';
+const PREFIX = 'Card'
 
 const classes = {
   title: `${PREFIX}-title`,
@@ -33,8 +31,8 @@ const classes = {
   chevronIcon: `${PREFIX}-chevronIcon`,
   pointerIcon: `${PREFIX}-pointerIcon`,
   children: `${PREFIX}-children`,
-  paddingRight: `${PREFIX}-paddingRight`
-};
+  paddingRight: `${PREFIX}-paddingRight`,
+}
 
 const StyledPaper = styled(Paper)(() => ({
   [`& .${classes.title}`]: {
@@ -71,8 +69,8 @@ const StyledPaper = styled(Paper)(() => ({
 
   [`& .${classes.paddingRight}`]: {
     padding: '0px 15px 0px 0px',
-  }
-}));
+  },
+}))
 
 const FlexDiv = styledComponents.div`
   display: flex;
@@ -131,6 +129,8 @@ const Card = ({
   children,
   editable,
   itemIndex,
+  showLicense,
+  onLicense,
   closeable,
   setFilters,
   onSaveEdit,
@@ -155,7 +155,6 @@ const Card = ({
   classes: { root, dragIndicator, header, children: childrenClassName },
 }) => {
   const [showMenu, setShowMenu] = useState(false)
-
 
   let settingsTitle = settingsTitle_
   if (!settingsTitle) {
@@ -240,14 +239,8 @@ const Card = ({
             {title}
           </div>
         </FlexDiv>
-        {closeable ? (
-          <CloseIcon
-            id='settings_card_close'
-            className={classes.pointerIcon}
-            onClick={onClose}
-          />
-        ) : (
-          <FlexDiv>
+        <FlexDiv>
+          {onRenderToolbar && (
             <Extensible onRenderItems={onRenderToolbar}>
               {alert && (
                 <IconButton
@@ -305,34 +298,47 @@ const Card = ({
                 </IconButton>
               ) : null}
             </Extensible>
-            {showMenu && (
-              <SettingsCard
-                title={settingsTitle}
-                open={showMenu}
-                headers={headers}
-                filters={filters}
-                fontSize={fontSize}
-                onClose={onMenuClick}
-                setFilters={setFilters}
-                setFontSize={setFontSize}
-                markdownView={markdownView}
-                onRemoveCard={onRemoveCard}
-                disableFilters={disableFilters}
-                onShowMarkdown={setMarkdownView}
-                onRenderSettings={onRenderSettings}
-                hideMarkdownToggle={hideMarkdownToggle}
-                getCustomComponent={getCustomComponent}
-              />
-            )}
-            {!disableSettingsButton && (
-              <MoreVertIcon
-                id={cardMenuId}
+          )}
+          {closeable ? (
+            <>
+              <InfoIcon
+                id='license_icon'
                 className={classes.pointerIcon}
-                onClick={onMenuClick}
+                onClick={showLicense}
               />
-            )}
-          </FlexDiv>
-        )}
+              <CloseIcon
+                id='settings_card_close'
+                className={classes.pointerIcon}
+                onClick={onClose}
+              />
+            </>
+          ) : (
+            <SettingsCard
+              title={settingsTitle}
+              open={showMenu}
+              headers={headers}
+              filters={filters}
+              fontSize={fontSize}
+              onClose={onMenuClick}
+              setFilters={setFilters}
+              setFontSize={setFontSize}
+              markdownView={markdownView}
+              onRemoveCard={onRemoveCard}
+              disableFilters={disableFilters}
+              onShowMarkdown={setMarkdownView}
+              onRenderSettings={onRenderSettings}
+              hideMarkdownToggle={hideMarkdownToggle}
+              getCustomComponent={getCustomComponent}
+            />
+          )}
+          {!disableSettingsButton && (
+            <MoreVertIcon
+              id={cardMenuId}
+              className={classes.pointerIcon}
+              onClick={onMenuClick}
+            />
+          )}
+        </FlexDiv>
       </FlexSpacedDiv>
       <FlexSpacedDiv className={header}>
         <NavigationFlexDiv>
@@ -355,7 +361,7 @@ const Card = ({
         enableAutoScrollToTop={enableAutoScrollToTop}
       />
     </StyledPaper>
-  );
+  )
 }
 
 Card.defaultProps = {
@@ -373,7 +379,8 @@ Card.defaultProps = {
   editable: false,
   saved: false,
   dragging: false,
-  closeable: false,
+  onLicense: false,
+  closeable: true,
   disableFilters: false,
   disableNavigation: false,
   hideMarkdownToggle: false,
@@ -396,6 +403,10 @@ Card.propTypes = {
   alert: PropTypes.bool,
   /** Show dragging icon when card is dragged */
   dragging: PropTypes.bool,
+  /** Show license icon instead of three dot menu icon */
+  onLicense: PropTypes.bool,
+  /** Function fired when the license icon is clicked  */
+  showLicense: PropTypes.func,
   /** Show close (x) icon instead of three dot menu icon */
   closeable: PropTypes.bool,
   /** Class names to modify the root, header and children */
