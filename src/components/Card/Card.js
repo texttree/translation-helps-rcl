@@ -378,7 +378,6 @@ Card.defaultProps = {
   editable: false,
   saved: false,
   dragging: false,
-  onLicense: false,
   closeable: false,
   disableFilters: false,
   disableNavigation: false,
