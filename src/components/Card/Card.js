@@ -129,7 +129,6 @@ const Card = ({
   children,
   editable,
   itemIndex,
-  showLicense,
   onLicense,
   closeable,
   setFilters,
@@ -259,7 +258,7 @@ const Card = ({
                   title='Minimize'
                   key='minimize-button'
                   aria-label='Minimize'
-                  onClick={() => onMinimize()}
+                  onClick={onMinimize}
                   className={classes.margin}
                 >
                   <MinimizeIcon id='minimize_icon' htmlColor='#000' />
@@ -299,11 +298,11 @@ const Card = ({
               ) : null}
             </Extensible>
           )}
-          {onLicense ? (
+          {!!onLicense ? (
             <InfoIcon
               id='license_icon'
               className={classes.pointerIcon}
-              onClick={showLicense}
+              onClick={onLicense}
             />
           ) : null}
           {closeable ? (
@@ -403,10 +402,8 @@ Card.propTypes = {
   alert: PropTypes.bool,
   /** Show dragging icon when card is dragged */
   dragging: PropTypes.bool,
-  /** Show license icon instead of three dot menu icon */
-  onLicense: PropTypes.bool,
   /** Function fired when the license icon is clicked  */
-  showLicense: PropTypes.func,
+  onLicense: PropTypes.func,
   /** Show close (x) icon instead of three dot menu icon */
   closeable: PropTypes.bool,
   /** Class names to modify the root, header and children */
